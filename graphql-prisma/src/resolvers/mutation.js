@@ -1,10 +1,10 @@
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 
 import getUserId from '../utils/getUserId'
+import generateToken from '../utils/generateToken'
 
 export default {
-  async createUser(parent, args, { prisma }, info) {
+  async createUser(args, { prisma }) {
     if (args.data.password.length < 8) throw new Error('password must be 8 or longer')
 
     const password = await bcrypt.hash(args.data.password, 10)
@@ -20,10 +20,10 @@ export default {
 
     return {
       user,
-      token: jwt.sign({ userId: user.id }, 'thisisasecret'),
+      token: generateToken(user.id),
     }
   },
-  async login(parent, args, { prisma }, info) {
+  async login(args, { prisma }) {
     const user = await prisma.query.user({
       where: {
         email: args.data.email,
@@ -38,10 +38,10 @@ export default {
 
     return {
       user,
-      token: jwt.sign({ userId: user.id }, 'thisisasecret'),
+      token: generateToken(user.id),
     }
   },
-  async deleteUser(parent, args, { prisma, request }, info) {
+  async deleteUser({ prisma, request }, info) {
     const userId = getUserId(request)
 
     return prisma.mutation.deleteUser(
@@ -53,7 +53,7 @@ export default {
       info,
     )
   },
-  async updateUser(parent, args, { prisma, request }, info) {
+  async updateUser(args, { prisma, request }, info) {
     const userId = getUserId(request)
 
     return prisma.mutation.updateUser(
@@ -66,7 +66,7 @@ export default {
       info,
     )
   },
-  async createPost(parent, args, { prisma, request }, info) {
+  async createPost(args, { prisma, request }, info) {
     const userId = getUserId(request)
 
     return prisma.mutation.createPost(
@@ -85,7 +85,7 @@ export default {
       info,
     )
   },
-  async updatePost(parent, args, { prisma, request }, info) {
+  async updatePost(args, { prisma, request }, info) {
     const userId = getUserId(request)
     const postExists = await prisma.query.Post({
       id: args.id,
@@ -120,7 +120,7 @@ export default {
       info,
     )
   },
-  async deletePost(parent, args, { prisma, request }, info) {
+  async deletePost(args, { prisma, request }, info) {
     const userId = getUserId(request)
     const postExists = await prisma.exists.Post({
       id: args.id,
@@ -140,7 +140,7 @@ export default {
       info,
     )
   },
-  async createComment(parent, args, { prisma, request }, info) {
+  async createComment(args, { prisma, request }, info) {
     const userId = getUserId(request)
     const postExists = await prisma.exists.Post({
       id: args.data.post,
@@ -168,7 +168,7 @@ export default {
       info,
     )
   },
-  async deleteComment(parent, args, { prisma, request }, info) {
+  async deleteComment(args, { prisma, request }, info) {
     const userId = getUserId(request)
     const commentExists = await prisma.query.Comment({
       id: args.id,
@@ -188,7 +188,7 @@ export default {
       info,
     )
   },
-  async updateComment(parent, args, { prisma, request }, info) {
+  async updateComment(args, { prisma, request }, info) {
     const userId = getUserId(request)
     const commentExists = await prisma.query.Comment({
       id: args.id,
