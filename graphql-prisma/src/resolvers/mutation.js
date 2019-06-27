@@ -5,7 +5,7 @@ import generateToken from '../utils/generateToken'
 import hashPassword from '../utils/hashPassword'
 
 export default {
-  async createUser(args, { prisma }) {
+  async createUser(parent, args, { prisma }, info) {
     const password = await hashPassword(args.data.password)
     const user = prisma.mutation.createUser(
       {
@@ -22,7 +22,7 @@ export default {
       token: generateToken(user.id),
     }
   },
-  async login(args, { prisma }) {
+  async login(parent, args, { prisma }, info) {
     const user = await prisma.query.user({
       where: {
         email: args.data.email,
@@ -40,7 +40,7 @@ export default {
       token: generateToken(user.id),
     }
   },
-  async deleteUser({ prisma, request }, info) {
+  async deleteUser(parent, args, { prisma, request }, info) {
     const userId = getUserId(request)
 
     return prisma.mutation.deleteUser(
@@ -52,7 +52,7 @@ export default {
       info,
     )
   },
-  async updateUser(args, { prisma, request }, info) {
+  async updateUser(parent, args, { prisma, request }, info) {
     const userId = getUserId(request)
 
     if (typeof args.data.password === 'string') args.data.password = await hashPassword(args.data.password)
@@ -67,7 +67,7 @@ export default {
       info,
     )
   },
-  async createPost(args, { prisma, request }, info) {
+  async createPost(parent, args, { prisma, request }, info) {
     const userId = getUserId(request)
 
     return prisma.mutation.createPost(
@@ -86,7 +86,7 @@ export default {
       info,
     )
   },
-  async updatePost(args, { prisma, request }, info) {
+  async updatePost(parent, args, { prisma, request }, info) {
     const userId = getUserId(request)
     const postExists = await prisma.query.Post({
       id: args.id,
@@ -121,7 +121,7 @@ export default {
       info,
     )
   },
-  async deletePost(args, { prisma, request }, info) {
+  async deletePost(parent, args, { prisma, request }, info) {
     const userId = getUserId(request)
     const postExists = await prisma.exists.Post({
       id: args.id,
@@ -141,7 +141,7 @@ export default {
       info,
     )
   },
-  async createComment(args, { prisma, request }, info) {
+  async createComment(parent, args, { prisma, request }, info) {
     const userId = getUserId(request)
     const postExists = await prisma.exists.Post({
       id: args.data.post,
@@ -169,7 +169,7 @@ export default {
       info,
     )
   },
-  async deleteComment(args, { prisma, request }, info) {
+  async deleteComment(parent, args, { prisma, request }, info) {
     const userId = getUserId(request)
     const commentExists = await prisma.query.Comment({
       id: args.id,
@@ -189,7 +189,7 @@ export default {
       info,
     )
   },
-  async updateComment(args, { prisma, request }, info) {
+  async updateComment(parent, args, { prisma, request }, info) {
     const userId = getUserId(request)
     const commentExists = await prisma.query.Comment({
       id: args.id,

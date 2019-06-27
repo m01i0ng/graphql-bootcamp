@@ -1,3 +1,3 @@
 import jwt from 'jsonwebtoken'
 
-export default userId => jwt.sign(payload, 'thisisasecret', { expiresIn: '7 days' })
+export default userId => jwt.sign({ userId }, 'thisisasecret', { expiresIn: '7 days' })
