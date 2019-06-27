@@ -10,9 +10,6 @@ export default {
           {
             name_contains: args.query,
           },
-          {
-            email_contains: args.query,
-          },
         ],
       }
     }
