@@ -1455,7 +1455,7 @@ command-exists@^1.2.2:
   resolved "https://registry.npm.taobao.org/command-exists/download/command-exists-1.2.8.tgz#715acefdd1223b9c9b37110a149c6392c2852291"
   integrity sha1-cVrO/dEiO5ybNxEKFJxjksKFIpE=
 
-commander@^2.11.0, commander@^2.5.0, commander@^2.7.1, commander@^2.9.0:
+commander@^2.0.0, commander@^2.11.0, commander@^2.5.0, commander@^2.7.1, commander@^2.9.0:
   version "2.20.0"
   resolved "https://registry.npm.taobao.org/commander/download/commander-2.20.0.tgz#d58bb2b5c1ee8f87b0d340027e9e94e222c5a422"
   integrity sha1-1YuytcHuj4ew00ACfp6U4iLFpCI=
@@ -1839,6 +1839,14 @@ end-of-stream@^1.1.0:
   integrity sha1-7SljTRm6ukY7bOa4CjchPqtx7EM=
   dependencies:
     once "^1.4.0"
+
+env-cmd@^9.0.3:
+  version "9.0.3"
+  resolved "https://registry.npm.taobao.org/env-cmd/download/env-cmd-9.0.3.tgz#b85265f5a9fd4c5fc7d7eff34e341dc28c3f9801"
+  integrity sha1-uFJl9an9TF/H1+/zTjQdwow/mAE=
+  dependencies:
+    commander "^2.0.0"
+    cross-spawn "^6.0.0"
 
 errno@^0.1.1:
   version "0.1.7"

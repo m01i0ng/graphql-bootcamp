@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon src/index.js -e js,graphql --exec babel-node",
+    "start": "",
+    "heroku-postbuild": "babel src --out-dir dist",
+    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js -e js,graphql --exec babel-node",
     "get-schema": "graphql get-schema -p prisma"
   },
   "dependencies": {
@@ -13,6 +15,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "bcryptjs": "^2.4.3",
+    "env-cmd": "^9.0.3",
     "graphql-cli": "2.16.4",
     "graphql-yoga": "^1.16.9",
     "jsonwebtoken": "^8.5.1",
